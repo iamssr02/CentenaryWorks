@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "344453465584",
+    "project_id": "centenaryworks",
+    "storage_bucket": "centenaryworks.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344453465584:android:d489789956e6f406b9c935",
+        "android_client_info": {
+          "package_name": "com.example.centenaryworks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "344453465584-7etovh77v6rraopqrll8svr5a8n6d8i8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.centenaryworks",
+            "certificate_hash": "79cb8e79ac80bb3ec097e2a6f291621ea4b4bcb4"
+          }
+        },
+        {
+          "client_id": "344453465584-4phqgrrhud3bcrmrag1ole8rkjeu5imv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJhfHHDJAfTYFkL7FhkJ1fgB3mU8Gfems"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "344453465584-4phqgrrhud3bcrmrag1ole8rkjeu5imv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

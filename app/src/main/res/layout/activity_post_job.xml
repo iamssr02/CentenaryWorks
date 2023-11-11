@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/jobTitleEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Job Title"/>
+
+    <EditText
+        android:id="@+id/jobDescriptionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/jobTitleEditText"
+        android:layout_marginTop="16dp"
+        android:hint="Job Description"/>
+
+    <EditText
+        android:id="@+id/numberOfOpeningsEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/jobDescriptionEditText"
+        android:layout_marginTop="16dp"
+        android:inputType="number"
+        android:hint="Number of Openings"/>
+
+    <EditText
+        android:id="@+id/salaryEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/numberOfOpeningsEditText"
+        android:layout_marginTop="16dp"
+        android:inputType="number"
+        android:hint="Salary"/>
+
+    <Button
+        android:id="@+id/postJobButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/salaryEditText"
+        android:layout_marginTop="16dp"
+        android:text="Post Job"/>
+
+</RelativeLayout>

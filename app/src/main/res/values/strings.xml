@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CentenaryWorks</string>
+    <string name="default_web_client_id">
+AIzaSyBJhfHHDJAfTYFkL7FhkJ1fgB3mU8Gfems</string>
+    <string-array name="gender_options">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+</resources>
