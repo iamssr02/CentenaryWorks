@@ -2,6 +2,8 @@ package com.example.centenaryworks;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,13 +20,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class JobDetailsActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapter.OnWorkerClickListener {
 
     private TextView jobTitleTextView, jobDescriptionTextView, appliedCandidatesTextView, numberofOpeningsTextView, salaryTextView;
     private Button applyButton, unapplyButton, editJobButton, deleteJobButton;
     private String jobId;
     private DatabaseReference jobsRef, applicationsRef;
     private FirebaseAuth auth;
+
+    private RecyclerView workersRecyclerView;
+    private WorkerAdapter workerAdapter;
+    private List<String> workerIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,11 @@ public class JobDetailsActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         jobsRef = FirebaseDatabase.getInstance().getReference("Jobs");
         applicationsRef = FirebaseDatabase.getInstance().getReference("Applications");
+
+        workersRecyclerView = findViewById(R.id.recyclerView);
+        workersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        workerAdapter = new WorkerAdapter(new ArrayList<>(), this);
+        workersRecyclerView.setAdapter(workerAdapter);
 
         jobId = getIntent().getStringExtra("jobId");
 
@@ -96,6 +110,27 @@ public class JobDetailsActivity extends AppCompatActivity {
                         // User is an official
                         applyButton.setVisibility(View.GONE);
                         unapplyButton.setVisibility(View.GONE);
+                        applicationsRef.child(jobId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    workerIds = new ArrayList<>();
+                                    for (DataSnapshot workerSnapshot : dataSnapshot.getChildren()) {
+                                        String workerId = workerSnapshot.getKey();
+                                        if (workerId != null) {
+                                            workerIds.add(workerId);
+                                        }
+                                    }
+                                    // Load worker names into RecyclerView
+                                    loadWorkerNames();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                // Handle errors if needed
+                            }
+                        });
                     }
                 }
 
@@ -105,6 +140,43 @@ public class JobDetailsActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void loadWorkerNames() {
+        // Retrieve worker names from the "Workers" node
+        DatabaseReference workersRef = FirebaseDatabase.getInstance().getReference("Workers");
+        workersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> workerNames = new ArrayList<>();
+                for (String workerId : workerIds) {
+                    DataSnapshot workerSnapshot = dataSnapshot.child(workerId);
+                    if (workerSnapshot.exists()) {
+                        Users worker = workerSnapshot.getValue(Users.class);
+                        if (worker != null) {
+                            workerNames.add(worker.getName());
+                        }
+                    }
+                }
+                // Update RecyclerView with worker names
+                workerAdapter.updateWorkers(workerNames);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle errors if needed
+            }
+        });
+    }
+
+    @Override
+    public void onWorkerClick(int position) {
+        // Handle click on a worker item in the RecyclerView
+        String selectedWorkerId = workerIds.get(position);
+        Intent intent = new Intent(JobDetailsActivity.this, WorkerDetailsActivity.class);
+        intent.putExtra("workerId", selectedWorkerId);
+        intent.putExtra("jobId", jobId);
+        startActivity(intent);
     }
 
     private void checkApplicationStatus() {
@@ -135,8 +207,8 @@ public class JobDetailsActivity extends AppCompatActivity {
                     Job job = dataSnapshot.getValue(Job.class);
                     jobTitleTextView.setText(job.getJobTitle());
                     jobDescriptionTextView.setText(job.getJobDescription());
-                    numberofOpeningsTextView.setText("Number of Openings: "+job.getNumberOfOpenings());
-                    salaryTextView.setText("Salary: "+job.getSalary());
+                    numberofOpeningsTextView.setText("Number of Openings: " + job.getNumberOfOpenings());
+                    salaryTextView.setText("Salary: " + job.getSalary());
                     loadAppliedCandidates();
                 }
             }
@@ -181,6 +253,7 @@ public class JobDetailsActivity extends AppCompatActivity {
             updateUI(false);
         }
     }
+
     private void updateUI(boolean hasApplied) {
         applyButton.setVisibility(hasApplied ? View.GONE : View.VISIBLE);
         unapplyButton.setVisibility(hasApplied ? View.VISIBLE : View.GONE);

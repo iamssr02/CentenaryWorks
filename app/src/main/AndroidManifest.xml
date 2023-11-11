@@ -25,6 +25,9 @@
             android:name=".DetailsActivity"
             android:exported="false" />
         <activity
+            android:name=".WorkerDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateAccountActivity"
             android:exported="true">
             <intent-filter>

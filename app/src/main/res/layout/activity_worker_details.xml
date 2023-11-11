@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WorkerDetailsActivity">
+
+    <TextView
+        android:id="@+id/workerNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Name: "
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/workerAgeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/workerNameTextView"
+        android:layout_marginTop="8dp"
+        android:text="Age: "
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/workerGenderTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/workerAgeTextView"
+        android:layout_marginTop="8dp"
+        android:text="Gender: "
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/workerExperienceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/workerGenderTextView"
+        android:layout_marginTop="8dp"
+        android:text="Experience: "
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/acceptButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/workerExperienceTextView"
+        android:layout_marginTop="16dp"
+        android:text="Accept"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/rejectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/acceptButton"
+        android:layout_marginTop="8dp"
+        android:text="Reject"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
