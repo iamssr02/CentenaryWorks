@@ -94,11 +94,15 @@ public class WorkerDetailsActivity extends AppCompatActivity {
                             // Update the job with decreased openings
                             jobsRef.child(jobId).child("numberOfOpenings").setValue(String.valueOf(currentOpenings - 1));
 
+                            // Add the worker's ID to the list of accepted applications
+                            applicationsRef.child(jobId).child("AcceptedApplications").child(workerId).setValue(true);
+
                             // Remove the worker's application
                             applicationsRef.child(jobId).child(workerId).removeValue();
                             finish(); // Finish the activity after accepting the application
                         } else {
                             // Handle the case when there are no openings
+                            Toast.makeText(WorkerDetailsActivity.this, "No openings available", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -111,8 +115,8 @@ public class WorkerDetailsActivity extends AppCompatActivity {
         });
     }
 
-
     private void rejectApplication() {
+        // Remove the worker's application
         applicationsRef.child(jobId).child(workerId).removeValue();
         finish(); // Finish the activity after rejecting the application
     }

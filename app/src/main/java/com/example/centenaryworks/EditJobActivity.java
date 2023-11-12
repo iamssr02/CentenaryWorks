@@ -53,6 +53,7 @@ public class EditJobActivity extends AppCompatActivity {
                         descriptionEditText.setText(currentJob.getJobDescription());
                         salaryTextView.setText("Salary: "+currentJob.getSalary());
                         openingsEditText.setText(String.valueOf(currentJob.getNumberOfOpenings()));
+                        salary = currentJob.getSalary();
                     }
                 }
             }
@@ -66,16 +67,15 @@ public class EditJobActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveChanges();
+                saveChanges(jobId);
             }
         });
     }
 
-    private void saveChanges() {
+    private void saveChanges(String jobId) {
         FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
             String officialUid = user.getUid();
-            String jobId = jobsRef.push().getKey();
             String newTitle = titleEditText.getText().toString().trim();
             String newDescription = descriptionEditText.getText().toString().trim();
             String openingsString = openingsEditText.getText().toString().trim();

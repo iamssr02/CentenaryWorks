@@ -26,7 +26,7 @@ import java.util.List;
 public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapter.OnWorkerClickListener {
 
     private TextView jobTitleTextView, jobDescriptionTextView, appliedCandidatesTextView, numberofOpeningsTextView, salaryTextView;
-    private Button applyButton, unapplyButton, editJobButton, deleteJobButton;
+    private Button applyButton, unapplyButton, editJobButton, deleteJobButton, acceptedApplicationsButton;
     private String jobId;
     private DatabaseReference jobsRef, applicationsRef;
     private FirebaseAuth auth;
@@ -49,6 +49,8 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
         unapplyButton = findViewById(R.id.unapplyButton);
         editJobButton = findViewById(R.id.editJobButton);
         deleteJobButton = findViewById(R.id.deleteJobButton);
+        acceptedApplicationsButton = findViewById(R.id.acceptedApplicationsButton);
+
 
         auth = FirebaseAuth.getInstance();
         jobsRef = FirebaseDatabase.getInstance().getReference("Jobs");
@@ -92,6 +94,20 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
                 deleteJob();
             }
         });
+
+        acceptedApplicationsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewAcceptedApplications();
+            }
+        });
+
+    }
+
+    private void viewAcceptedApplications() {
+        Intent intent = new Intent(JobDetailsActivity.this, AcceptedApplicationsActivity.class);
+        intent.putExtra("jobId", jobId);
+        startActivity(intent);
     }
 
     private void checkUserStatus() {
@@ -106,10 +122,12 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
                         // User is a worker
                         deleteJobButton.setVisibility(View.GONE);
                         editJobButton.setVisibility(View.GONE);
+                        acceptedApplicationsButton.setVisibility(View.GONE);
                     } else {
                         // User is an official
                         applyButton.setVisibility(View.GONE);
                         unapplyButton.setVisibility(View.GONE);
+                        workersRecyclerView.setVisibility(View.VISIBLE);
                         applicationsRef.child(jobId).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -268,6 +286,7 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
     private void deleteJob() {
         // Delete the job and navigate back to the previous screen
         jobsRef.child(jobId).removeValue();
+        applicationsRef.child(jobId).removeValue();
         finish();
     }
 }

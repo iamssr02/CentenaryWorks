@@ -13,6 +13,9 @@
         android:theme="@style/Theme.CentenaryWorks"
         tools:targetApi="31">
         <activity
+            android:name=".AcceptedApplicationsActivity"
+            android:exported="false" />
+        <activity
             android:name=".EditJobActivity"
             android:exported="false" />
         <activity

@@ -70,6 +70,15 @@
         android:layout_marginTop="16dp"
         android:text="Applied Candidates: 0" />
 
+    <Button
+        android:id="@+id/acceptedApplicationsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="View All Accepted Applications" />
+
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -77,5 +86,6 @@
         android:layout_marginTop="8dp"
         android:clipToPadding="false"
         android:padding="8dp"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:visibility="gone"/>
 </LinearLayout>
