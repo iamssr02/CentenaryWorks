@@ -1,9 +1,13 @@
 package com.example.centenaryworks;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 public class WorkerDetailsActivity extends AppCompatActivity {
 
     private TextView nameTextView, ageTextView, genderTextView, experienceTextView;
+    ProgressBar mProgressBar;
     private Button acceptButton, rejectButton;
     private DatabaseReference workersRef, jobsRef, applicationsRef;
     private FirebaseAuth auth;
@@ -36,6 +41,9 @@ public class WorkerDetailsActivity extends AppCompatActivity {
         acceptButton = findViewById(R.id.acceptButton);
         rejectButton = findViewById(R.id.rejectButton);
 
+        mProgressBar = findViewById(R.id.phoneProgressBar);
+        mProgressBar.setVisibility(View.GONE);
+
         auth = FirebaseAuth.getInstance();
         workersRef = FirebaseDatabase.getInstance().getReference("Workers");
         jobsRef = FirebaseDatabase.getInstance().getReference("Jobs");
@@ -49,7 +57,17 @@ public class WorkerDetailsActivity extends AppCompatActivity {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                acceptApplication();
+                mProgressBar.setVisibility(View.VISIBLE);
+                long delayMillis = 1000;
+
+                // Use a Handler to post a delayed action
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Start your activity here
+                        acceptApplication();
+                    }
+                }, delayMillis);
             }
         });
 
@@ -60,6 +78,7 @@ public class WorkerDetailsActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void loadWorkerDetails() {
         workersRef.child(workerId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -101,6 +120,10 @@ public class WorkerDetailsActivity extends AppCompatActivity {
 
                             // Remove the worker's application
                             applicationsRef.child(jobId).child(workerId).removeValue();
+                            Intent intent = new Intent(WorkerDetailsActivity.this, JobDetailsActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.putExtra("jobId", jobId);
+                            startActivity(intent);
                             finish(); // Finish the activity after accepting the application
                         } else {
                             // Handle the case when there are no openings

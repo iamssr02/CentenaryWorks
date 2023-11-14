@@ -71,8 +71,6 @@ public class PostJobActivity extends AppCompatActivity {
                 Job job = new Job(jobId, jobTitle, jobDescription, officialUid, numberOfOpenings, salary, formattedDate);
                 jobsRef.child(jobId).setValue(job);
 
-                // Optionally, you can add additional logic after posting the job
-
                 finish(); // Close the activity after posting
             }
         }
