@@ -51,6 +51,10 @@ public class WorkerDetailsActivity extends AppCompatActivity {
 
         workerId = getIntent().getStringExtra("workerId");
         jobId = getIntent().getStringExtra("jobId");
+        if(getIntent().hasExtra("FLAG")){
+            acceptButton.setVisibility(View.GONE);
+            rejectButton.setVisibility(View.GONE);
+        }
 
         loadWorkerDetails();
 
@@ -143,6 +147,10 @@ public class WorkerDetailsActivity extends AppCompatActivity {
     private void rejectApplication() {
         // Remove the worker's application
         applicationsRef.child(jobId).child(workerId).removeValue();
+        Intent intent = new Intent(WorkerDetailsActivity.this, JobDetailsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("jobId", jobId);
+        startActivity(intent);
         finish(); // Finish the activity after rejecting the application
     }
 }
