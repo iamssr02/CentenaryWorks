@@ -13,6 +13,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class PostJobActivity extends AppCompatActivity {
 
     private EditText jobTitleEditText;
@@ -51,6 +55,11 @@ public class PostJobActivity extends AppCompatActivity {
         String numberOfOpenings = numberOfOpeningsEditText.getText().toString().trim();
         String salary = salaryEditText.getText().toString().trim();
 
+        // Get today's date
+        Date today = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        String formattedDate = dateFormat.format(today);
+
         if (!jobTitle.isEmpty() && !jobDescription.isEmpty() && !numberOfOpenings.isEmpty() && !salary.isEmpty()) {
 
 
@@ -59,7 +68,7 @@ public class PostJobActivity extends AppCompatActivity {
                 String officialUid = user.getUid();
                 String jobId = jobsRef.push().getKey();
 
-                Job job = new Job(jobId, jobTitle, jobDescription, officialUid, numberOfOpenings, salary);
+                Job job = new Job(jobId, jobTitle, jobDescription, officialUid, numberOfOpenings, salary, formattedDate);
                 jobsRef.child(jobId).setValue(job);
 
                 // Optionally, you can add additional logic after posting the job

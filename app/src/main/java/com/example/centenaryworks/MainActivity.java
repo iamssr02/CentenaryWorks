@@ -64,10 +64,10 @@ public class MainActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         // User is a worker
-                        postJobButton.setVisibility(View.GONE);
                         loadWorkerJobs();
                     } else {
                         // User is an official
+                        postJobButton.setVisibility(View.VISIBLE);
                         loadOfficialJobs(uid);
                     }
                 }

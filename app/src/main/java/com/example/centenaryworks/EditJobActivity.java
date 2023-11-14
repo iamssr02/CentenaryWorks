@@ -21,11 +21,11 @@ public class EditJobActivity extends AppCompatActivity {
     private EditText descriptionEditText;
     private EditText openingsEditText;
 
-    private TextView salaryTextView;
+    private TextView salaryTextView, dateTextView;
     private Button saveButton;
     private DatabaseReference jobsRef;
     private FirebaseAuth auth;
-    private String jobId, title, description, numberOfOpenings, salary;
+    private String jobId, salary, date;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +40,7 @@ public class EditJobActivity extends AppCompatActivity {
         openingsEditText = findViewById(R.id.editOpeningsEditText);
         saveButton = findViewById(R.id.saveButton);
         salaryTextView = findViewById(R.id.salaryTextView);
+        dateTextView = findViewById(R.id.dateTextView);
 
         jobId = getIntent().getStringExtra("jobId");
 
@@ -54,6 +55,8 @@ public class EditJobActivity extends AppCompatActivity {
                         titleEditText.setText(currentJob.getJobTitle());
                         descriptionEditText.setText(currentJob.getJobDescription());
                         salaryTextView.setText("Salary: "+currentJob.getSalary());
+                        date = currentJob.getDate();
+                        dateTextView.setText("Posted Date: "+date);
                         openingsEditText.setText(String.valueOf(currentJob.getNumberOfOpenings()));
                         salary = currentJob.getSalary();
                     }
@@ -86,7 +89,7 @@ public class EditJobActivity extends AppCompatActivity {
 
 
                 // Update the job details in the database
-                Job updatedJob = new Job(jobId, newTitle, newDescription, officialUid, openingsString, salary);
+                Job updatedJob = new Job(jobId, newTitle, newDescription, officialUid, openingsString, salary, date);
                 jobsRef.child(jobId).setValue(updatedJob);
 
                 // Finish the activity

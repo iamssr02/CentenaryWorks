@@ -5,22 +5,23 @@ public class Job {
     private String jobId;
     private String jobTitle;
     private String jobDescription;
-    private String officialUid; // UID of the official who posted the job
-
+    private String officialUid;
     private String numberOfOpenings;
     private String salary;
+    private String date;
 
     // Required default constructor for Firebase
     public Job() {
     }
 
-    public Job(String jobId, String jobTitle, String jobDescription, String officialUid, String numberOfOpenings, String salary) {
+    public Job(String jobId, String jobTitle, String jobDescription, String officialUid, String numberOfOpenings, String salary, String date) {
         this.jobId = jobId;
         this.jobTitle = jobTitle;
         this.jobDescription = jobDescription;
         this.officialUid = officialUid;
         this.numberOfOpenings = numberOfOpenings;
         this.salary = salary;
+        this.date = date;
     }
 
     public String getJobId() {
@@ -68,6 +69,14 @@ public class Job {
 
     public void setSalary(String salary) {
         this.salary = salary;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
 

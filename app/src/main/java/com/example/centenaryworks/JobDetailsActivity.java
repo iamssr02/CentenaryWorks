@@ -28,11 +28,12 @@ import java.util.List;
 
 public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapter.OnWorkerClickListener {
 
-    private TextView jobTitleTextView, jobDescriptionTextView, appliedCandidatesTextView, numberofOpeningsTextView, salaryTextView;
+    private TextView jobTitleTextView, jobDescriptionTextView, appliedCandidatesTextView, numberofOpeningsTextView, salaryTextView, dateTextView;
     private Button applyButton, unapplyButton, editJobButton, deleteJobButton, acceptedApplicationsButton;
     private String jobId;
     private DatabaseReference jobsRef, applicationsRef;
     private FirebaseAuth auth;
+    private FirebaseUser user;
 
     private RecyclerView workersRecyclerView;
     private WorkerAdapter workerAdapter;
@@ -48,6 +49,7 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
         appliedCandidatesTextView = findViewById(R.id.appliedCandidatesTextView);
         numberofOpeningsTextView = findViewById(R.id.numberOfOpeningsTextView);
         salaryTextView = findViewById(R.id.salaryTextView);
+        dateTextView = findViewById(R.id.dateTextView);
         applyButton = findViewById(R.id.applyButton);
         unapplyButton = findViewById(R.id.unapplyButton);
         editJobButton = findViewById(R.id.editJobButton);
@@ -58,6 +60,7 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
         auth = FirebaseAuth.getInstance();
         jobsRef = FirebaseDatabase.getInstance().getReference("Jobs");
         applicationsRef = FirebaseDatabase.getInstance().getReference("Applications");
+        user = auth.getCurrentUser();
 
         workersRecyclerView = findViewById(R.id.recyclerView);
         workersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -76,28 +79,24 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
                 applyForJob();
             }
         });
-
         unapplyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 unapplyForJob();
             }
         });
-
         editJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 editJob();
             }
         });
-
         deleteJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 deleteJob();
             }
         });
-
         acceptedApplicationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,7 +113,6 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
     }
 
     private void checkUserStatus() {
-        FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
             String uid = user.getUid();
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Workers").child(uid);
@@ -201,7 +199,6 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
     }
 
     private void checkApplicationStatus() {
-        FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
             String userId = user.getUid();
             applicationsRef.child(jobId).child(userId)
@@ -230,6 +227,7 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
                     jobDescriptionTextView.setText(job.getJobDescription());
                     numberofOpeningsTextView.setText("Number of Openings: " + job.getNumberOfOpenings());
                     salaryTextView.setText("Salary: " + job.getSalary());
+                    dateTextView.setText("Posted Date: " + job.getDate());
                     loadAppliedCandidates();
                 }
             }
@@ -257,7 +255,7 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
     }
 
     private void applyForJob() {
-        FirebaseUser user = auth.getCurrentUser();
+
         if (user != null) {
             String workerUid = user.getUid();
             applicationsRef.child(jobId).child(workerUid).setValue(true);
@@ -267,7 +265,6 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
     }
 
     private void unapplyForJob() {
-        FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
             String userId = user.getUid();
             applicationsRef.child(jobId).child(userId).removeValue();
