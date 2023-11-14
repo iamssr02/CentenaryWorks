@@ -74,7 +74,6 @@ public class CreateAccountActivity extends AppCompatActivity {
             public void onClick(View view) {
                 flag = 1;
                 mProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(CreateAccountActivity.this, "Logging as offical", Toast.LENGTH_SHORT).show();
                 signInGoogle();
             }
         });
@@ -111,31 +110,50 @@ public class CreateAccountActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     FirebaseUser user = auth.getCurrentUser();
                     String currentUserId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
-                    if(flag == 0)
-                        database = FirebaseDatabase.getInstance().getReference("Workers");
-                    else
-                        database = FirebaseDatabase.getInstance().getReference("Officials");
-                    database.child(currentUserId).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+
+                    // Check if the user exists in Workers or Officials nodes
+                    DatabaseReference workersRef = FirebaseDatabase.getInstance().getReference("Workers");
+                    DatabaseReference officialsRef = FirebaseDatabase.getInstance().getReference("Officials");
+
+                    workersRef.child(currentUserId).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
                         @Override
-                        public void onSuccess(DataSnapshot dataSnapshot) {
-                            if (!dataSnapshot.exists()) {
-                                Intent intent = new Intent(CreateAccountActivity.this, DetailsActivity.class);
-                                intent.putExtra("EMAIL", user.getEmail());
-                                intent.putExtra("NAME", user.getDisplayName());
-                                intent.putExtra("FLAG", String.valueOf(flag));
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            }
-                            else {
-                                Intent intent = new Intent(CreateAccountActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finishAffinity();
-                            }
+                        public void onSuccess(DataSnapshot workersSnapshot) {
+                            officialsRef.child(currentUserId).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                                @Override
+                                public void onSuccess(DataSnapshot officialsSnapshot) {
+                                    if(flag == 0 && officialsSnapshot.exists()) {
+                                        Toast.makeText(CreateAccountActivity.this,
+                                                "Account already exists as official", Toast.LENGTH_LONG).show();
+                                        mProgressBar.setVisibility(View.GONE);
+                                    }
+                                    else if (flag == 1 && workersSnapshot.exists()) {
+                                        Toast.makeText(CreateAccountActivity.this,
+                                                "Account already exists as worker", Toast.LENGTH_LONG).show();
+                                        mProgressBar.setVisibility(View.GONE);
+                                    }
+                                    else if((flag == 1 && officialsSnapshot.exists()) || (flag == 0 && workersSnapshot.exists())){
+                                        // User exists in either Workers or Officials node
+                                        Intent intent = new Intent(CreateAccountActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        finishAffinity();
+                                    }
+                                    else {
+                                        // User doesn't exist in either Workers or Officials node
+                                        // Proceed to create a new account
+                                        Intent intent = new Intent(CreateAccountActivity.this, DetailsActivity.class);
+                                        intent.putExtra("EMAIL", user.getEmail());
+                                        intent.putExtra("NAME", user.getDisplayName());
+                                        intent.putExtra("FLAG", String.valueOf(flag));
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
                         }
                     });
+                } else {
+                    Toast.makeText(CreateAccountActivity.this, "Error", Toast.LENGTH_SHORT).show();
                 }
-                else
-                    Toast.makeText(CreateAccountActivity.this, "error", Toast.LENGTH_SHORT).show();
             }
         });
     }

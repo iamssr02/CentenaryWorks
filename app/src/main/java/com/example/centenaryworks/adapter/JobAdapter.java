@@ -1,4 +1,4 @@
-package com.example.centenaryworks;
+package com.example.centenaryworks.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.centenaryworks.models.Job;
+import com.example.centenaryworks.R;
 
 import java.util.List;
 

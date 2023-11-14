@@ -1,4 +1,4 @@
-package com.example.centenaryworks;
+package com.example.centenaryworks.models;
 
 public class Job {
 

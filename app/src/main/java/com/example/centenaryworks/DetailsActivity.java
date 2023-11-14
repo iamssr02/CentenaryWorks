@@ -12,8 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.Toast;
 
+import com.example.centenaryworks.models.Users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -83,12 +83,7 @@ public class DetailsActivity extends AppCompatActivity {
                 if (nameText!=null && ageText!=null){
                     FirebaseUser user = auth.getCurrentUser();
 
-                    Users users = new Users();
-                    users.setUid(user.getUid());
-                    users.setAge(ageText);
-                    users.setGender(selectedGender);
-                    users.setName(nameText);
-                    users.setWorkYears(workYearText);
+                    Users users = new Users(nameText, email, user.getUid(), ageText, selectedGender, workYearText);
 
                     if(Objects.equals(flag, "0")){
                         database.child("Workers").child(user.getUid()).setValue(users);
@@ -105,7 +100,5 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 }

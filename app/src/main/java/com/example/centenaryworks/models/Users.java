@@ -1,7 +1,8 @@
-package com.example.centenaryworks;
+package com.example.centenaryworks.models;
 
 public class Users {
     private String name;
+    private String email;
     private String uid;
     private String age;
     private String gender;
@@ -12,8 +13,9 @@ public class Users {
     }
 
     // Parameterized constructor
-    public Users(String name, String uid, String age, String gender, String workYears) {
+    public Users(String name, String email, String uid, String age, String gender, String workYears) {
         this.name = name;
+        this.email = email;
         this.uid = uid;
         this.age = age;
         this.gender = gender;
@@ -27,6 +29,14 @@ public class Users {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUid() {
