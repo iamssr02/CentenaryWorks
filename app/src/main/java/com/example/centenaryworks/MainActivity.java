@@ -1,18 +1,23 @@
 package com.example.centenaryworks;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.centenaryworks.adapter.JobAdapter;
 import com.example.centenaryworks.models.Job;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference jobsRef;
     private FirebaseAuth auth;
     private FirebaseUser user;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +74,12 @@ public class MainActivity extends AppCompatActivity {
                     if (dataSnapshot.exists()) {
                         // User is a worker
                         loadWorkerJobs();
+                        setupWorkerNavigation();
                     } else {
                         // User is an official
                         postJobButton.setVisibility(View.VISIBLE);
                         loadOfficialJobs(uid);
+                        setupOfficialNavigation();
                     }
                 }
 
@@ -89,6 +98,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Set up the Toolbar and ActionBarDrawerToggle
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
+        );
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
     }
 
     private void loadWorkerJobs() {
@@ -97,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 jobList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Log.d("TAG", "onDataChange: " + snapshot.toString());
                     Job job = snapshot.getValue(Job.class);
 
                     DatabaseReference acceptedApplicationsRef = FirebaseDatabase.getInstance().getReference("Applications")
@@ -153,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
         void onCallback(int result);
     }
 
-
     private void loadOfficialJobs(String officialUid) {
         jobsRef.orderByChild("officialUid").equalTo(officialUid).addValueEventListener(new ValueEventListener() {
             @Override
@@ -169,6 +191,44 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Handle errors if needed
+            }
+        });
+    }
+
+    private void setupWorkerNavigation() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.nav_my_applications) {
+                    startActivity(new Intent(MainActivity.this, MyApplicationsActivity.class));
+                } else if (itemId == R.id.nav_logout) {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
+                    finish();
+                }
+                drawerLayout.closeDrawers(); // Close the drawer after selecting an item
+                return true;
+            }
+        });
+    }
+
+    private void setupOfficialNavigation() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.nav_my_jobs) {
+                    startActivity(new Intent(MainActivity.this, MyJobsActivity.class));
+                } else if (itemId == R.id.nav_logout) {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
+                    finish();
+                }
+                drawerLayout.closeDrawers(); // Close the drawer after selecting an item
+                return true;
             }
         });
     }

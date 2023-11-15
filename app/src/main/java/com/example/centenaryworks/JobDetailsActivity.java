@@ -32,6 +32,7 @@ public class JobDetailsActivity extends AppCompatActivity {
     private TextView jobTitleTextView, jobDescriptionTextView, appliedCandidatesTextView, numberofOpeningsTextView, salaryTextView, dateTextView;
     private Button applyButton, unapplyButton, editJobButton, deleteJobButton, acceptedApplicationsButton;
     private String jobId;
+    private int flags;
     private DatabaseReference jobsRef, applicationsRef;
     private FirebaseAuth auth;
     private FirebaseUser user;
@@ -62,6 +63,11 @@ public class JobDetailsActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         jobsRef = FirebaseDatabase.getInstance().getReference("Jobs");
         jobId = getIntent().getStringExtra("jobId");
+
+        if(getIntent().hasExtra("FLAGS")){
+            flags = 1;
+        }
+
         applicationsRef = FirebaseDatabase.getInstance().getReference("Applications");
         user = auth.getCurrentUser();
 
@@ -115,7 +121,6 @@ public class JobDetailsActivity extends AppCompatActivity {
                 viewAcceptedApplications();
             }
         });
-
     }
 
     private void viewAcceptedApplications() {
@@ -133,6 +138,10 @@ public class JobDetailsActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         // User is a worker
+                        if(flags==1){
+                            applyButton.setVisibility(View.GONE);
+                            unapplyButton.setVisibility(View.GONE);
+                        }
                         deleteJobButton.setVisibility(View.GONE);
                         editJobButton.setVisibility(View.GONE);
                         acceptedApplicationsButton.setVisibility(View.GONE);
@@ -272,8 +281,14 @@ public class JobDetailsActivity extends AppCompatActivity {
     }
 
     private void updateUI(boolean hasApplied) {
-        applyButton.setVisibility(hasApplied ? View.GONE : View.VISIBLE);
-        unapplyButton.setVisibility(hasApplied ? View.VISIBLE : View.GONE);
+        if(flags==1){
+            applyButton.setVisibility(View.GONE);
+            unapplyButton.setVisibility(View.GONE);
+        }
+        else {
+            applyButton.setVisibility(hasApplied ? View.GONE : View.VISIBLE);
+            unapplyButton.setVisibility(hasApplied ? View.VISIBLE : View.GONE);
+        }
     }
 
     private void editJob() {
