@@ -11,11 +11,16 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/footerLayout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="8dp"
-        android:padding="8dp"
+        android:layout_marginEnd="0dp"
         android:clipToPadding="false"
-        android:scrollbars="vertical"
-        android:layout_above="@+id/footerLayout"/>
+        android:padding="8dp"
+        android:scrollbars="vertical" />
 
     <LinearLayout
         android:id="@+id/footerLayout"
