@@ -32,7 +32,7 @@ public class JobDetailsActivity extends AppCompatActivity {
     private TextView jobTitleTextView, jobDescriptionTextView, appliedCandidatesTextView, numberofOpeningsTextView, salaryTextView, dateTextView;
     private Button applyButton, unapplyButton, editJobButton, deleteJobButton, acceptedApplicationsButton;
     private String jobId;
-    private int flags;
+    private int flags, flags1;
     private DatabaseReference jobsRef, applicationsRef;
     private FirebaseAuth auth;
     private FirebaseUser user;
@@ -66,6 +66,7 @@ public class JobDetailsActivity extends AppCompatActivity {
 
         if(getIntent().hasExtra("FLAGS")){
             flags = 1;
+            flags1 = 1;
         }
 
         applicationsRef = FirebaseDatabase.getInstance().getReference("Applications");
@@ -145,8 +146,13 @@ public class JobDetailsActivity extends AppCompatActivity {
                         deleteJobButton.setVisibility(View.GONE);
                         editJobButton.setVisibility(View.GONE);
                         acceptedApplicationsButton.setVisibility(View.GONE);
-                    } else {
+                    }
+                    else {
                         // User is an official
+                        if(flags1==1){
+                            editJobButton.setVisibility(View.GONE);
+                            deleteJobButton.setVisibility(View.GONE);
+                        }
                         applyButton.setVisibility(View.GONE);
                         unapplyButton.setVisibility(View.GONE);
                         workersRecyclerView.setVisibility(View.VISIBLE);

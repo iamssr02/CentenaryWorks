@@ -61,17 +61,7 @@ public class WorkerDetailsActivity extends AppCompatActivity {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mProgressBar.setVisibility(View.VISIBLE);
-                long delayMillis = 1000;
-
-                // Use a Handler to post a delayed action
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Start your activity here
-                        acceptApplication();
-                    }
-                }, delayMillis);
+                acceptApplication();
             }
         });
 

@@ -10,13 +10,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.centenaryworks.adapter.JobAdapter;
 import com.example.centenaryworks.models.Job;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
+    private GoogleSignInClient mGoogleSignInClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +55,13 @@ public class MainActivity extends AppCompatActivity {
         jobsRef = FirebaseDatabase.getInstance().getReference("Jobs");
 
         Button postJobButton = findViewById(R.id.postJobButton);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -123,27 +136,31 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Job job = snapshot.getValue(Job.class);
 
-                    DatabaseReference acceptedApplicationsRef = FirebaseDatabase.getInstance().getReference("Applications")
-                            .child(job.getJobId()).child("AcceptedApplications");
-                    DatabaseReference rejectedApplicationsRef = FirebaseDatabase.getInstance().getReference("Applications")
-                            .child(job.getJobId()).child("RejectedApplications");
+                    // Check if numberOfOpenings is greater than 0
+                    if (job != null && Integer.parseInt(job.getNumberOfOpenings()) > 0) {
 
-                    checkApplicationStatus(user.getUid(), acceptedApplicationsRef, job, new Callback() {
-                        @Override
-                        public void onCallback(int result) {
-                            if (result == 1) {
-                                checkApplicationStatus(user.getUid(), rejectedApplicationsRef, job, new Callback() {
-                                    @Override
-                                    public void onCallback(int result) {
-                                        if (result == 1) {
-                                            jobList.add(job);
-                                            jobAdapter.notifyDataSetChanged();
+                        DatabaseReference acceptedApplicationsRef = FirebaseDatabase.getInstance().getReference("Applications")
+                                .child(job.getJobId()).child("AcceptedApplications");
+                        DatabaseReference rejectedApplicationsRef = FirebaseDatabase.getInstance().getReference("Applications")
+                                .child(job.getJobId()).child("RejectedApplications");
+
+                        checkApplicationStatus(user.getUid(), acceptedApplicationsRef, job, new Callback() {
+                            @Override
+                            public void onCallback(int result) {
+                                if (result == 1) {
+                                    checkApplicationStatus(user.getUid(), rejectedApplicationsRef, job, new Callback() {
+                                        @Override
+                                        public void onCallback(int result) {
+                                            if (result == 1) {
+                                                jobList.add(job);
+                                                jobAdapter.notifyDataSetChanged();
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             }
 
@@ -153,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void checkApplicationStatus(String workerId, DatabaseReference applicationsRef, Job job, Callback callback) {
         applicationsRef.child(workerId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -183,7 +201,11 @@ public class MainActivity extends AppCompatActivity {
                 jobList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Job job = snapshot.getValue(Job.class);
-                    jobList.add(job);
+
+                    // Check if numberOfOpenings is greater than 0
+                    if (job != null && Integer.parseInt(job.getNumberOfOpenings()) > 0) {
+                        jobList.add(job);
+                    }
                 }
                 jobAdapter.notifyDataSetChanged();
             }
@@ -195,8 +217,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     private void setupWorkerNavigation() {
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.getMenu().clear();
+        navigationView.inflateMenu(R.menu.drawer_menu_worker);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -204,9 +229,14 @@ public class MainActivity extends AppCompatActivity {
                 if (itemId == R.id.nav_my_applications) {
                     startActivity(new Intent(MainActivity.this, MyApplicationsActivity.class));
                 } else if (itemId == R.id.nav_logout) {
-                    FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
-                    finish();
+                    mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Intent intent = new Intent(MainActivity.this, CreateAccountActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
                 }
                 drawerLayout.closeDrawers(); // Close the drawer after selecting an item
                 return true;
@@ -216,6 +246,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupOfficialNavigation() {
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.getMenu().clear();
+        navigationView.inflateMenu(R.menu.drawer_menu_official);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -223,9 +255,14 @@ public class MainActivity extends AppCompatActivity {
                 if (itemId == R.id.nav_my_jobs) {
                     startActivity(new Intent(MainActivity.this, MyJobsActivity.class));
                 } else if (itemId == R.id.nav_logout) {
-                    FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
-                    finish();
+                    mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Intent intent = new Intent(MainActivity.this, CreateAccountActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
                 }
                 drawerLayout.closeDrawers(); // Close the drawer after selecting an item
                 return true;
