@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.centenaryworks.adapter.JobAdapter;
 import com.example.centenaryworks.adapter.WorkerAdapter;
 import com.example.centenaryworks.models.Job;
 import com.example.centenaryworks.models.Users;
@@ -26,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapter.OnWorkerClickListener {
+public class JobDetailsActivity extends AppCompatActivity {
 
     private TextView jobTitleTextView, jobDescriptionTextView, appliedCandidatesTextView, numberofOpeningsTextView, salaryTextView, dateTextView;
     private Button applyButton, unapplyButton, editJobButton, deleteJobButton, acceptedApplicationsButton;
@@ -37,6 +38,7 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
 
     private RecyclerView workersRecyclerView;
     private WorkerAdapter workerAdapter;
+    private List<Users> workerNames;
     private List<String> workerIds;
 
     @Override
@@ -50,24 +52,34 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
         numberofOpeningsTextView = findViewById(R.id.numberOfOpeningsTextView);
         salaryTextView = findViewById(R.id.salaryTextView);
         dateTextView = findViewById(R.id.dateTextView);
+
         applyButton = findViewById(R.id.applyButton);
         unapplyButton = findViewById(R.id.unapplyButton);
         editJobButton = findViewById(R.id.editJobButton);
         deleteJobButton = findViewById(R.id.deleteJobButton);
         acceptedApplicationsButton = findViewById(R.id.acceptedApplicationsButton);
 
-
         auth = FirebaseAuth.getInstance();
         jobsRef = FirebaseDatabase.getInstance().getReference("Jobs");
+        jobId = getIntent().getStringExtra("jobId");
         applicationsRef = FirebaseDatabase.getInstance().getReference("Applications");
         user = auth.getCurrentUser();
 
         workersRecyclerView = findViewById(R.id.recyclerView);
         workersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        workerAdapter = new WorkerAdapter(new ArrayList<>(), this);
+        workerNames = new ArrayList<>();
+        workerIds = new ArrayList<>();
+        workerAdapter = new WorkerAdapter(workerNames, new WorkerAdapter.OnWorkerClickListener() {
+            @Override
+            public void onWorkerClick(Users users) {
+                // Handle click on a worker item in the RecyclerView
+                Intent intent = new Intent(JobDetailsActivity.this, WorkerDetailsActivity.class);
+                intent.putExtra("workerId", users.getUid());
+                intent.putExtra("jobId", jobId);
+                startActivity(intent);
+            }
+        });
         workersRecyclerView.setAdapter(workerAdapter);
-
-        jobId = getIntent().getStringExtra("jobId");
 
         loadJobDetails();
         checkApplicationStatus();
@@ -129,11 +141,10 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
                         applyButton.setVisibility(View.GONE);
                         unapplyButton.setVisibility(View.GONE);
                         workersRecyclerView.setVisibility(View.VISIBLE);
-                        applicationsRef.child(jobId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        applicationsRef.child(jobId).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
-                                    workerIds = new ArrayList<>();
                                     for (DataSnapshot workerSnapshot : dataSnapshot.getChildren()) {
                                         String workerId = workerSnapshot.getKey();
                                         if (workerId != null) {
@@ -164,21 +175,19 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
     private void loadWorkerNames() {
         // Retrieve worker names from the "Workers" node
         DatabaseReference workersRef = FirebaseDatabase.getInstance().getReference("Workers");
-        workersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        workersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<String> workerNames = new ArrayList<>();
                 for (String workerId : workerIds) {
                     DataSnapshot workerSnapshot = dataSnapshot.child(workerId);
                     if (workerSnapshot.exists()) {
                         Users worker = workerSnapshot.getValue(Users.class);
                         if (worker != null) {
-                            workerNames.add(worker.getName());
+                            workerNames.add(worker);
                         }
                     }
                 }
-                // Update RecyclerView with worker names
-                workerAdapter.updateWorkers(workerNames);
+                workerAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -186,16 +195,6 @@ public class JobDetailsActivity extends AppCompatActivity implements WorkerAdapt
                 // Handle errors if needed
             }
         });
-    }
-
-    @Override
-    public void onWorkerClick(int position) {
-        // Handle click on a worker item in the RecyclerView
-        String selectedWorkerId = workerIds.get(position);
-        Intent intent = new Intent(JobDetailsActivity.this, WorkerDetailsActivity.class);
-        intent.putExtra("workerId", selectedWorkerId);
-        intent.putExtra("jobId", jobId);
-        startActivity(intent);
     }
 
     private void checkApplicationStatus() {

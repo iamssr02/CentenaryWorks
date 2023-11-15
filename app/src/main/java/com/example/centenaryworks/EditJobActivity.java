@@ -1,5 +1,6 @@
 package com.example.centenaryworks;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -92,7 +93,10 @@ public class EditJobActivity extends AppCompatActivity {
                 Job updatedJob = new Job(jobId, newTitle, newDescription, officialUid, openingsString, salary, date);
                 jobsRef.child(jobId).setValue(updatedJob);
 
-                // Finish the activity
+                Intent intent = new Intent(EditJobActivity.this, JobDetailsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("jobId", jobId);
+                startActivity(intent);
                 finish();
             }
         }

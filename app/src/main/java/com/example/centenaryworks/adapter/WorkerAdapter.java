@@ -4,35 +4,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.centenaryworks.R;
+import com.example.centenaryworks.models.Users;
 
 import java.util.List;
 
 public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.ViewHolder> {
 
-    private List<String> workerNames;
+    private List<Users> workerNames;
     private OnWorkerClickListener listener;
 
-    public WorkerAdapter(List<String> workerNames, OnWorkerClickListener listener) {
+    public interface OnWorkerClickListener {
+        void onWorkerClick(Users users);
+    }
+
+    public WorkerAdapter(List<Users> workerNames, OnWorkerClickListener listener) {
         this.workerNames = workerNames;
         this.listener = listener;
-    }
-
-    public interface OnWorkerClickListener {
-        void onWorkerClick(int position);
-    }
-
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView workerNameTextView;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            workerNameTextView = itemView.findViewById(R.id.workerNameTextView);
-        }
     }
 
     @NonNull
@@ -44,17 +35,8 @@ public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String workerName = workerNames.get(position);
-        holder.workerNameTextView.setText(workerName);
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (listener != null) {
-                    listener.onWorkerClick(position);
-                }
-            }
-        });
+        Users users = workerNames.get(position);
+        holder.bind(users, listener);
     }
 
     @Override
@@ -62,11 +44,23 @@ public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.ViewHolder
         return workerNames.size();
     }
 
-    public void updateWorkers(List<String> newWorkerNames) {
-        workerNames.clear();
-        workerNames.addAll(newWorkerNames);
-        notifyDataSetChanged();
+    static class ViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView nameTextView;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            nameTextView = itemView.findViewById(R.id.workerNameTextView);
+        }
+
+        public void bind(final Users users, final OnWorkerClickListener listener) {
+            nameTextView.setText(users.getName());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onWorkerClick(users);
+                }
+            });
+        }
     }
-
 }
-
