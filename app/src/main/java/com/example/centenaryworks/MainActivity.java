@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Job> jobList;
     private DatabaseReference jobsRef;
     private FirebaseAuth auth;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(jobAdapter);
 
-        FirebaseUser user = auth.getCurrentUser();
+        user = auth.getCurrentUser();
         if (user != null) {
             String uid = user.getUid();
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Workers").child(uid);
@@ -95,10 +97,31 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 jobList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d("TAG", "onDataChange: " + snapshot.toString());
                     Job job = snapshot.getValue(Job.class);
-                    jobList.add(job);
+
+                    DatabaseReference acceptedApplicationsRef = FirebaseDatabase.getInstance().getReference("Applications")
+                            .child(job.getJobId()).child("AcceptedApplications");
+                    DatabaseReference rejectedApplicationsRef = FirebaseDatabase.getInstance().getReference("Applications")
+                            .child(job.getJobId()).child("RejectedApplications");
+
+                    checkApplicationStatus(user.getUid(), acceptedApplicationsRef, job, new Callback() {
+                        @Override
+                        public void onCallback(int result) {
+                            if (result == 1) {
+                                checkApplicationStatus(user.getUid(), rejectedApplicationsRef, job, new Callback() {
+                                    @Override
+                                    public void onCallback(int result) {
+                                        if (result == 1) {
+                                            jobList.add(job);
+                                            jobAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
                 }
-                jobAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -107,6 +130,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void checkApplicationStatus(String workerId, DatabaseReference applicationsRef, Job job, Callback callback) {
+        applicationsRef.child(workerId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int flag = 0;
+                if (!dataSnapshot.exists()) {
+                    flag = 1;
+                }
+                callback.onCallback(flag);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle errors if needed
+            }
+        });
+    }
+
+    interface Callback {
+        void onCallback(int result);
+    }
+
 
     private void loadOfficialJobs(String officialUid) {
         jobsRef.orderByChild("officialUid").equalTo(officialUid).addValueEventListener(new ValueEventListener() {

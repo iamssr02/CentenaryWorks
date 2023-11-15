@@ -145,6 +145,10 @@ public class WorkerDetailsActivity extends AppCompatActivity {
     }
 
     private void rejectApplication() {
+
+        // Add the worker's ID to the list of accepted applications
+        applicationsRef.child(jobId).child("RejectedApplications").child(workerId).setValue(true);
+
         // Remove the worker's application
         applicationsRef.child(jobId).child(workerId).removeValue();
         Intent intent = new Intent(WorkerDetailsActivity.this, JobDetailsActivity.class);
@@ -152,5 +156,6 @@ public class WorkerDetailsActivity extends AppCompatActivity {
         intent.putExtra("jobId", jobId);
         startActivity(intent);
         finish(); // Finish the activity after rejecting the application
+
     }
 }
