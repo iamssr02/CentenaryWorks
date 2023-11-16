@@ -58,18 +58,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textSize="@dimen/_15ssp"
-        android:hint="Salary"/>
+        android:textSize="@dimen/_15ssp"/>
 
-    <EditText
-        android:id="@+id/salaryEditText"
-        android:layout_marginBottom="@dimen/_16sdp"
+    <TextView
+        android:id="@+id/dateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Salary"
-        android:inputType="number"/>
-
+        android:textSize="@dimen/_15ssp"/>
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
