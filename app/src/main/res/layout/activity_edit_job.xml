@@ -5,19 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="32dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Title"/>
+        android:hint="Title"
+
+        />
 
     <EditText
         android:id="@+id/editTitleEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Job Title"
+        android:layout_marginBottom="@dimen/_16sdp"
         android:inputType="text"/>
 
     <TextView
@@ -28,6 +31,7 @@
 
     <EditText
         android:id="@+id/editDescriptionEditText"
+        android:layout_marginBottom="@dimen/_16sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -42,6 +46,7 @@
 
     <EditText
         android:id="@+id/editOpeningsEditText"
+        android:layout_marginBottom="@dimen/_16sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -53,14 +58,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textSize="@dimen/_15ssp"/>
+        android:textSize="@dimen/_15ssp"
+        android:hint="Salary"/>
 
-    <TextView
-        android:id="@+id/dateTextView"
+    <EditText
+        android:id="@+id/salaryEditText"
+        android:layout_marginBottom="@dimen/_16sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textSize="@dimen/_15ssp"/>
+        android:hint="Salary"
+        android:inputType="number"/>
 
     <Button
         android:id="@+id/saveButton"

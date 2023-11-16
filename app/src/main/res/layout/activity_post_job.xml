@@ -2,7 +2,12 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/_32sdp"
+    android:paddingLeft="@dimen/_32sdp"
+    android:paddingRight="@dimen/_32sdp"
+    android:paddingBottom="@dimen/_20sdp"
+    >
 
     <EditText
         android:id="@+id/jobTitleEditText"
@@ -16,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/jobTitleEditText"
         android:layout_marginTop="16dp"
-        android:hint="Job Description"/>
+        android:hint="Job Description"
+        />
 
     <EditText
         android:id="@+id/numberOfOpeningsEditText"
@@ -38,10 +44,12 @@
 
     <Button
         android:id="@+id/postJobButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/salaryEditText"
         android:layout_marginTop="16dp"
-        android:text="Post Job"/>
+        android:layout_marginVertical="@dimen/_32sdp"
+        android:text="Post Job"
+        />
 
 </RelativeLayout>
