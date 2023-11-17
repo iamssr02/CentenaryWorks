@@ -9,24 +9,9 @@ Our project is to digitilize this project.
 
 This groundbreaking project harnesses the power of cutting-edge technologies, Java and Firebase, to develop a user-friendly mobile application that revolutionizes the way job postings are handled and applications are submitted. By embracing the digital era, the project fosters transparency, efficiency, and empowerment within the 100 Days of Work program, empowering both the government and the workforce.
 
-The Need for Digitalization
-
-The traditional methods of assigning 100-day work contracts were often plagued by inefficiencies and a lack of transparency. Paper-based applications, scattered job postings, and manual review processes led to delays, miscommunication, and challenges in identifying the most qualified candidates. This not only hindered the program's effectiveness but also created frustrations for both government officials and job seekers.
-
-The 100 Days of Work digitalization project emerged as a response to these challenges, seeking to transform the program into a model of efficiency and transparency. By embracing digitalization, the project aims to:
-
-Streamline Job Postings: Government officials can now effortlessly post job opportunities, providing detailed descriptions of the roles and responsibilities. This eliminates the need for paper-based postings and ensures that all eligible individuals have equal access to job information.
-
-Facilitate Job Applications: Eligible individuals can seamlessly apply for posted jobs, furnishing their credentials and qualifications through the mobile application. This streamlined process eliminates the need for physical submission of applications and makes it easier for candidates to apply from anywhere, at any time.
-
-Expedite Application Review: Government officials can efficiently review submitted applications, assess candidate suitability, and make informed decisions to accept or reject applications based on the specified requirements. This digital review process reduces administrative burdens and expedites the placement of eligible candidates.
-
-The Significance of Java and Firebase
-
-The choice of Java and Firebase as the project's technological backbone was a strategic one. Java, a modern programming language well-suited for Android app development, ensures the application's compatibility with a wide range of mobile devices, maximizing its reach and accessibility. Firebase, a cloud-based platform, provides a comprehensive suite of services, including authentication, data storage, and real-time communication, simplifying development and ensuring the application's scalability and reliability.
 
 
-#About the Scheme
+<h1>About the Scheme</h1>
 
 
 The Government of India passed the Mahatma Gandhi National Rural Employment Guarantee Act, 2005 in September, 2005. The Act gives legal guarantee of a hundred days of wage employment in a financial year to adult members of a rural household who demand employment and are willing to do unskilled manual work. The Act will be applicable to areas notified by the Central Government. The objective of the Act is to enhance the livelihood security of the people in the rural areas by generating wage employment through works that develop the infrastructure base of that area.
