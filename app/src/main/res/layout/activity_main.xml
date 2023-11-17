@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/toolbar"
-            android:layout_marginTop="@dimen/_7sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:padding="@dimen/_2sdp"
             android:clipToPadding="false"
             android:scrollbars="vertical" />
