@@ -45,7 +45,7 @@
                 android:id="@+id/postJobButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Post a Job"
+                android:text="Post a job"
                 android:backgroundTint="@color/colorPrimary"
                 android:visibility="gone"/>
 
