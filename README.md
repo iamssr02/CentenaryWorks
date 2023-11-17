@@ -9,12 +9,12 @@ Our project is to digitilize this project.
 
 This groundbreaking project harnesses the power of cutting-edge technologies, Java and Firebase, to develop a user-friendly mobile application that revolutionizes the way job postings are handled and applications are submitted. By embracing the digital era, the project fosters transparency, efficiency, and empowerment within the 100 Days of Work program, empowering both the government and the workforce.
 
-<h2>Project Overview</h2>
+<h1>Project Overview</h1>
 
 
 The 100 Days of Work digitalization project is designed to revolutionize the way in which the government connects with and empowers the labor class. By embracing technology, the project aims to streamline the process of assigning 100-day work contracts, ensuring equal access to opportunities, reducing administrative burdens, and empowering eligible individuals to take control of their employment prospects.
 
-<h2>Job Posting</h2>:
+<h2>Job Posting:</h2>
 
 Empowering the Labor Class: The streamlined job posting feature ensures that all eligible individuals are aware of available opportunities, regardless of their location or background. This transparency empowers the labor class to actively seek employment and participate in the program.
 
@@ -30,7 +30,7 @@ Reducing Administrative Burdens: The digital application process reduces the adm
 
 Empowering Self-Advocacy: The ability to apply for jobs directly through the application empowers individuals to take control of their employment journey. This promotes self-advocacy and encourages active participation in the 100 Days of Work program.
 
-<h2>Application Review and Decision</h2>:
+<h2>Application Review and Decision:</h2>
 
 Ensuring Fairness and Transparency: The digital review process ensures that applications are reviewed fairly and transparently, based on specified criteria and without bias or discrimination. This promotes a sense of equity and trust among applicants.
 
