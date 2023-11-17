@@ -35,7 +35,7 @@
             android:id="@+id/jobDescriptionTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_11ssp"
             android:textColor="@color/dark_gray"
             android:maxLines="5"
             android:scrollbars="vertical" />
