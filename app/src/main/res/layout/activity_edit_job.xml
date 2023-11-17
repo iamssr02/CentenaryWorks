@@ -1,75 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="32dp">
+    android:background="@drawable/bg">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Title"
+        android:orientation="vertical"
+        android:padding="32dp">
 
-        />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Edit Job Details"
+            android:layout_gravity="center"
+            android:textSize="@dimen/_30ssp"
+            android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/editTitleEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Job Title"
-        android:layout_marginBottom="@dimen/_16sdp"
-        android:inputType="text"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Title"
+            android:fontFamily="@font/poppins_medium"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Description"/>
+        <EditText
+            android:id="@+id/editTitleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Job Title"
+            android:textColor="@color/dark_gray"
+            android:layout_marginBottom="@dimen/_16ssp"
+            android:fontFamily="@font/poppins_medium"
+            android:inputType="text"/>
 
-    <EditText
-        android:id="@+id/editDescriptionEditText"
-        android:layout_marginBottom="@dimen/_16sdp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Job Description"
-        android:inputType="textMultiLine"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Description"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Number of Openings"/>
+        <EditText
+            android:id="@+id/editDescriptionEditText"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/dark_gray"
+            android:hint="Job Description"
+            android:inputType="textMultiLine"
+            android:maxLines="5"
+            android:scrollbars="vertical"/>
 
-    <EditText
-        android:id="@+id/editOpeningsEditText"
-        android:layout_marginBottom="@dimen/_16sdp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Number of Openings"
-        android:inputType="number"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Number of Openings"/>
 
-    <TextView
-        android:id="@+id/salaryTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="@dimen/_15ssp"/>
+        <EditText
+            android:id="@+id/editOpeningsEditText"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dark_gray"
+            android:layout_marginTop="8dp"
+            android:hint="Number of Openings"
+            android:inputType="number"/>
 
-    <TextView
-        android:id="@+id/dateTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="@dimen/_15ssp"/>
-    <Button
-        android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Save Changes"/>
-</LinearLayout>
+        <TextView
+            android:id="@+id/salaryTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="@dimen/_15ssp"/>
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="@dimen/_15ssp"/>
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Save Changes"/>
+
+    </LinearLayout>
+</ScrollView>

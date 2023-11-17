@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     tools:context=".DetailsActivity">
 
     <ProgressBar
@@ -32,7 +33,7 @@
             android:id="@+id/gifView"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_100sdp"
-            android:src="@drawable/bank" />
+            android:src="@drawable/logo" />
 
         <TextView
             android:layout_width="wrap_content"

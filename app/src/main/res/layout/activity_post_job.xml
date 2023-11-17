@@ -6,13 +6,14 @@
     android:paddingTop="@dimen/_32sdp"
     android:paddingLeft="@dimen/_32sdp"
     android:paddingRight="@dimen/_32sdp"
-    android:paddingBottom="@dimen/_20sdp"
-    >
+    android:background="@drawable/bg"
+    android:paddingBottom="@dimen/_20sdp">
 
     <EditText
         android:id="@+id/jobTitleEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
         android:hint="Job Title"/>
 
     <EditText
@@ -22,7 +23,9 @@
         android:layout_below="@+id/jobTitleEditText"
         android:layout_marginTop="16dp"
         android:hint="Job Description"
-        />
+        android:maxLines="5"
+        android:fontFamily="@font/poppins_medium"
+        android:scrollbars="vertical" />
 
     <EditText
         android:id="@+id/numberOfOpeningsEditText"
@@ -31,6 +34,7 @@
         android:layout_below="@+id/jobDescriptionEditText"
         android:layout_marginTop="16dp"
         android:inputType="number"
+        android:fontFamily="@font/poppins_medium"
         android:hint="Number of Openings"/>
 
     <EditText
@@ -40,7 +44,8 @@
         android:layout_below="@+id/numberOfOpeningsEditText"
         android:layout_marginTop="16dp"
         android:inputType="number"
-        android:hint="Salary"/>
+        android:hint="Salary"
+        android:fontFamily="@font/poppins_medium"/>
 
     <Button
         android:id="@+id/postJobButton"
@@ -48,8 +53,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/salaryEditText"
         android:layout_marginTop="16dp"
+        android:backgroundTint="@color/colorPrimary"
         android:layout_marginVertical="@dimen/_32sdp"
-        android:text="Post Job"
-        />
+        android:text="Post Job"/>
 
 </RelativeLayout>

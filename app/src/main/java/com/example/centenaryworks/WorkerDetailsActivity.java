@@ -4,10 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 public class WorkerDetailsActivity extends AppCompatActivity {
 
     private TextView nameTextView, ageTextView, genderTextView, experienceTextView;
-    ProgressBar mProgressBar;
     private Button acceptButton, rejectButton;
     private DatabaseReference workersRef, jobsRef, applicationsRef;
     private FirebaseAuth auth;
@@ -40,9 +37,6 @@ public class WorkerDetailsActivity extends AppCompatActivity {
         experienceTextView = findViewById(R.id.workerExperienceTextView);
         acceptButton = findViewById(R.id.acceptButton);
         rejectButton = findViewById(R.id.rejectButton);
-
-        mProgressBar = findViewById(R.id.phoneProgressBar);
-        mProgressBar.setVisibility(View.GONE);
 
         auth = FirebaseAuth.getInstance();
         workersRef = FirebaseDatabase.getInstance().getReference("Workers");

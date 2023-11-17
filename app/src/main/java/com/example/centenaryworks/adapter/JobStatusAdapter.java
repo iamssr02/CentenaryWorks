@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.centenaryworks.R;
@@ -61,6 +62,22 @@ public class JobStatusAdapter extends RecyclerView.Adapter<JobStatusAdapter.View
             titleTextView.setText(jobStatus.getJobTitle());
             descriptionTextView.setText(jobStatus.getJobDescription());
 
+            String status = jobStatus.getJobDescription();
+            int textColor;
+            switch (status) {
+                case "Accepted":
+                    textColor = ContextCompat.getColor(itemView.getContext(), android.R.color.holo_green_dark);
+                    break;
+                case "Rejected":
+                    textColor = ContextCompat.getColor(itemView.getContext(), android.R.color.holo_red_dark);
+                    break;
+                default:
+                    // Handle other cases if needed
+                    textColor = ContextCompat.getColor(itemView.getContext(), android.R.color.black);
+                    break;
+            }
+            descriptionTextView.setTextColor(textColor);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -69,5 +86,6 @@ public class JobStatusAdapter extends RecyclerView.Adapter<JobStatusAdapter.View
             });
         }
     }
+
 }
 

@@ -2,6 +2,8 @@ package com.example.centenaryworks;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,6 +33,7 @@ public class MyApplicationsActivity extends AppCompatActivity {
     private DatabaseReference applicationsRef;
     private FirebaseUser user;
     private FirebaseAuth auth;
+    private TextView noApplicationsTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class MyApplicationsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         jobStatusList = new ArrayList<>();
+        noApplicationsTextView = findViewById(R.id.noApplicationsTextView);
         jobStatusAdapter = new JobStatusAdapter(jobStatusList, new JobStatusAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(JobStatus jobStatus) {
@@ -82,6 +86,7 @@ public class MyApplicationsActivity extends AppCompatActivity {
         });
     }
 
+
     private void checkApplicationStatus(String jobId, JobStatus jobStatus) {
         DatabaseReference userApplicationsRef = applicationsRef.child(jobId);
 
@@ -107,6 +112,10 @@ public class MyApplicationsActivity extends AppCompatActivity {
                                 }
 
                                 jobStatusAdapter.notifyDataSetChanged();
+                            }
+                            else {
+                                recyclerView.setVisibility(View.GONE);
+                                noApplicationsTextView.setVisibility(View.VISIBLE);
                             }
                         }
 

@@ -2,6 +2,9 @@ package com.example.centenaryworks;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +33,7 @@ public class AcceptedApplicationsActivity extends AppCompatActivity {
     private DatabaseReference workersRef, applicationsRef;
     private FirebaseAuth auth;
     private String workerId, jobId;
+    private TextView noApplicationsTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,7 @@ public class AcceptedApplicationsActivity extends AppCompatActivity {
 
         workersRecyclerView = findViewById(R.id.recyclerView);
         workersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        noApplicationsTextView = findViewById(R.id.noApplicationsTextView);
         workerNames = new ArrayList<>();
         workerIds = new ArrayList<>();
         workerAdapter = new WorkerAdapter(workerNames, new WorkerAdapter.OnWorkerClickListener() {
@@ -72,6 +77,11 @@ public class AcceptedApplicationsActivity extends AppCompatActivity {
                     }
                     // Load worker names into RecyclerView
                     loadWorkerNames();
+                }
+                else {
+                    // No accepted applications, show the message
+                    workersRecyclerView.setVisibility(View.GONE);
+                    noApplicationsTextView.setVisibility(View.VISIBLE);
                 }
             }
 

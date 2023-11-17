@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.centenaryworks.adapter.JobAdapter;
 import com.example.centenaryworks.models.Job;
@@ -29,6 +31,7 @@ public class MyJobsActivity extends AppCompatActivity {
     private DatabaseReference jobsRef;
     private FirebaseAuth auth;
     private FirebaseUser user;
+    private TextView noJobsTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class MyJobsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         jobList = new ArrayList<>();
+        noJobsTextView = findViewById(R.id.noJobsTextView);
         jobAdapter = new JobAdapter(jobList, new JobAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Job job) {
@@ -72,6 +76,9 @@ public class MyJobsActivity extends AppCompatActivity {
                     }
                 }
                 jobAdapter.notifyDataSetChanged();
+                if (jobList.isEmpty()){
+                    noJobsTextView.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override

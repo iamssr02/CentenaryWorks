@@ -1,98 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="@dimen/_16sdp"
+    android:background="@drawable/bg">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/_8sdp"
+        android:text="Job Details"
+        android:textSize="@dimen/_30ssp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/jobTitleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="bold"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_4sdp" />
 
-    <TextView
-        android:id="@+id/jobDescriptionTextView"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp" />
+        android:layout_marginTop="@dimen/_8sdp">
+
+        <TextView
+            android:id="@+id/jobDescriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/dark_gray"
+            android:maxLines="5"
+            android:scrollbars="vertical" />
+
+    </ScrollView>
+
 
     <TextView
         android:id="@+id/numberOfOpeningsTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp" />
+        android:layout_marginTop="@dimen/_8sdp"
+        android:textSize="@dimen/_12ssp"
+        android:textColor="@color/dark_gray" />
 
     <TextView
         android:id="@+id/salaryTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp" />
+        android:layout_marginTop="@dimen/_8sdp"
+        android:textSize="@dimen/_12ssp"
+        android:textColor="@color/dark_gray" />
 
     <TextView
         android:id="@+id/dateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp" />
+        android:layout_marginTop="@dimen/_8sdp"
+        android:textSize="@dimen/_12ssp"
+        android:textColor="@color/dark_gray" />
 
     <Button
         android:id="@+id/applyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Apply for Job" />
+        android:layout_marginTop="@dimen/_16sdp"
+        android:text="Apply for Job"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/unapplyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/_16sdp"
         android:text="Unapply for Job"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:backgroundTint="@color/colorAccent"
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/editJobButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Edit Job" />
+        android:layout_marginTop="@dimen/_16sdp"
+        android:text="Edit Job"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/deleteJobButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Delete Job" />
+        android:layout_marginTop="@dimen/_16sdp"
+        android:text="Delete Job"
+        android:backgroundTint="@color/colorAccent"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/appliedCandidatesTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Applied Candidates: 0" />
+        android:layout_marginTop="@dimen/_16sdp"
+        android:text="Applied Candidates: 0"
+        android:textSize="@dimen/_12ssp"
+        android:textColor="@color/dark_gray" />
 
     <Button
         android:id="@+id/acceptedApplicationsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="View All Accepted Applications" />
-
-
+        android:layout_marginTop="@dimen/_16sdp"
+        android:text="View All Accepted Applications"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@android:color/white" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:padding="@dimen/_8sdp"
         android:clipToPadding="false"
-        android:padding="8dp"
         android:scrollbars="vertical"
         android:visibility="gone"/>
 </LinearLayout>
